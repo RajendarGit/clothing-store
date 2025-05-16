@@ -4,6 +4,7 @@ import "./globals.css"
 import { Providers } from "@/redux/provider"
 import { ThemeProvider } from "@/components/theme-provider"
 import Footer from "@/components/footer"
+import MainNav from "@/components/main-nav"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -22,10 +23,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <Providers>{children}</Providers>
+          <Providers>
+            <MainNav />
+            <main>{children}</main>
+          </Providers>
           <Footer />
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

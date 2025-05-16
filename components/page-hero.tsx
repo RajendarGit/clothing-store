@@ -2,7 +2,7 @@ import React from 'react'
 
 interface PageHeroProps {
   title: string;
-  description: string;
+  description?: string;
 }
 
 const PageHero: React.FC<PageHeroProps> = ({ title, description }) => {

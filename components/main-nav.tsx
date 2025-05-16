@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { ShoppingBag, User, Search, Menu, X, Heart, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useSelector } from "react-redux"
@@ -11,7 +10,6 @@ import { ModeToggle } from "./mode-toggle"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export default function MainNav() {
-  const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null)
   const { items } = useSelector((state: RootState) => state.cart)
