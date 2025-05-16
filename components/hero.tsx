@@ -7,8 +7,8 @@ export default function Hero() {
     <section className="relative h-[600px] overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
-          src="/placeholder.svg?height=1200&width=2000"
-          alt="Hero background"
+          src="/assets/images/banner/banner.jpg"
+          alt="Elegance in Every Stitch"
           fill
           className="object-cover"
           priority
@@ -25,7 +25,7 @@ export default function Hero() {
           <Button size="lg" asChild>
             <Link href="/new-arrivals">Shop New Arrivals</Link>
           </Button>
-          <Button variant="outline" size="lg" className="text-white border-white hover:bg-white/10" asChild>
+          <Button variant="outline" size="lg" className="text-white hover:border-white hover:bg-white/10" asChild>
             <Link href="/collections">Explore Collections</Link>
           </Button>
         </div>

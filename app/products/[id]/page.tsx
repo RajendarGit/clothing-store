@@ -24,7 +24,7 @@ export default function ProductPage() {
   const { user } = useSelector((state: RootState) => state.auth)
 
   // Find the product by ID
-  const product = dummyProducts.find((p) => p.id === id) || dummyProducts[0]
+  const product = dummyProducts.find((p) => p.id === Number(id)) || dummyProducts[0]
 
   const [selectedColor, setSelectedColor] = useState(product.colors[0])
   const [selectedSize, setSelectedSize] = useState("M")
@@ -91,7 +91,8 @@ export default function ProductPage() {
           <div className="space-y-4">
             <div className="relative aspect-square overflow-hidden rounded-lg border">
               <Image
-                src={productImages[activeImage] || "/placeholder.svg"}
+                // src={productImages[activeImage] || "/placeholder.svg"}
+                src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/${product.image ?? "placeholder.svg"}`}
                 alt={product.name}
                 fill
                 className="object-cover"
@@ -108,7 +109,7 @@ export default function ProductPage() {
                   onClick={() => setActiveImage(index)}
                 >
                   <Image
-                    src={image || "/placeholder.svg"}
+                    src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/${product.image ?? "placeholder.svg"}`}
                     alt={`Product image ${index + 1}`}
                     fill
                     className="object-cover"
