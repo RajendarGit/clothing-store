@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import MainNav from "@/components/main-nav";
 import { dummyProducts } from "@/data/products";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,18 +10,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Accordion } from "@/components/ui/accordion";
-import { Filter, X } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
 import type { Product } from "@/types/product";
 import ProductGrid from "@/components/product-grid";
 import PageHero from "@/components/page-hero";
-import FilterCategories from "@/components/filter-categories";
-import FilterPriceRange from "@/components/filter-price-range";
-import FilterColors from "@/components/filter-colors";
-import FilterSizes from "@/components/filter-sizes";
+import Container from "@/components/ui/container";
+import ActiveFilterSection from "@/components/active-filter-section";
+import MobileFilterButton from "@/components/mobile-filter-button";
+import FilterAccordion from "@/components/filter-accordion";
+import FilterTitleBelowSection from "@/components/filter-title-below-section";
+import FilterNoProductsFoundSection from "@/components/filter-no-products-found-section";
 
 // Get only new products (for demo, we'll use isNew flag or just take the first 12 products)
 const newArrivals = dummyProducts
@@ -229,114 +225,22 @@ export default function NewArrivalsPage() {
       ? 1
       : 0);
 
-  const FilterAccordion = () => {
-    return (
-      <Accordion
-        type="multiple"
-        defaultValue={["categories", "price", "colors", "sizes"]}
-        className="space-y-4"
-      >
-        <FilterCategories
-          categories={categories}
-          activeFilters={activeFilters}
-          toggleCategory={toggleCategory}
-        />
-
-        <FilterPriceRange
-          activeFilters={activeFilters}
-          handlePriceChange={handlePriceChange}
-        />
-
-        <FilterColors
-          colors={colors}
-          activeFilters={activeFilters}
-          toggleColor={toggleColor}
-        />
-
-        <FilterSizes
-          sizes={sizes}
-          activeFilters={activeFilters}
-          toggleSize={toggleSize}
-        />
-      </Accordion>
-    );
-  };
-
   return (
     <>
-      <MainNav />
-
       {/* Hero Banner */}
       <PageHero
         title="New Arrivals"
         description="Discover our latest collection of premium clothing and accessories. Be the first to shop our newest styles."
       />
 
-      <div className="container py-12">
+      <Container>
         {/* Active Filters */}
-        {activeFilterCount > 0 && (
-          <div className="mb-6 flex flex-wrap gap-2 items-center">
-            <span className="text-sm font-medium">Active Filters:</span>
-
-            {activeFilters.categories.map((category) => (
-              <Badge
-                key={category}
-                variant="secondary"
-                className="flex items-center gap-1"
-              >
-                {category}
-                <button onClick={() => removeFilter("category", category)}>
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            ))}
-
-            {activeFilters.colors.map((color) => (
-              <Badge
-                key={color}
-                variant="secondary"
-                className="flex items-center gap-1"
-              >
-                <span
-                  className="w-3 h-3 rounded-full mr-1"
-                  style={{ backgroundColor: color }}
-                ></span>
-                <button onClick={() => removeFilter("color", color)}>
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            ))}
-
-            {activeFilters.sizes.map((size) => (
-              <Badge
-                key={size}
-                variant="secondary"
-                className="flex items-center gap-1"
-              >
-                Size: {size}
-                <button onClick={() => removeFilter("size", size)}>
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            ))}
-
-            {(activeFilters.priceRange[0] > 0 ||
-              activeFilters.priceRange[1] < 200) && (
-              <Badge variant="secondary" className="flex items-center gap-1">
-                ${activeFilters.priceRange[0]} - ${activeFilters.priceRange[1]}
-              </Badge>
-            )}
-
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={clearAllFilters}
-              className="text-muted-foreground"
-            >
-              Clear All
-            </Button>
-          </div>
-        )}
+        <ActiveFilterSection
+          activeFilterCount={activeFilterCount}
+          clearAllFilters={clearAllFilters}
+          activeFilters={activeFilters}
+          removeFilter={removeFilter}
+        />
 
         <div className="flex flex-col md:flex-row gap-8">
           {/* Desktop Filters */}
@@ -356,88 +260,56 @@ export default function NewArrivalsPage() {
                 )}
               </div>
 
-              <FilterAccordion />
+              <FilterAccordion
+                activeFilters={activeFilters}
+                categories={categories}
+                toggleCategory={toggleCategory}
+                handlePriceChange={handlePriceChange}
+                colors={colors}
+                toggleColor={toggleColor}
+                sizes={sizes}
+                toggleSize={toggleSize}
+              />
             </div>
           </div>
 
           {/* Mobile Filter Button */}
-          <div className="md:hidden mb-4">
-            <Sheet open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
-              <SheetTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="w-full flex items-center justify-between"
-                >
-                  <div className="flex items-center">
-                    <Filter className="mr-2 h-4 w-4" />
-                    <span>Filters</span>
-                  </div>
-                  {activeFilterCount > 0 && (
-                    <Badge variant="secondary">{activeFilterCount}</Badge>
-                  )}
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-full sm:max-w-md">
-                <h2 className="text-xl font-bold mb-6">Filters</h2>
-                <ScrollArea className="h-[calc(100vh-10rem)] pr-4">
-                  <FilterAccordion />
-                </ScrollArea>
-
-                <div className="flex items-center justify-between mt-6">
-                  <Button variant="outline" onClick={clearAllFilters}>
-                    Clear All
-                  </Button>
-                  <Button onClick={() => setMobileFiltersOpen(false)}>
-                    Apply Filters
-                  </Button>
-                </div>
-              </SheetContent>
-            </Sheet>
-          </div>
+          <MobileFilterButton
+            mobileFiltersOpen={mobileFiltersOpen}
+            setMobileFiltersOpen={setMobileFiltersOpen}
+            activeFilterCount={activeFilterCount}
+            clearAllFilters={clearAllFilters}
+            FilterAccordion={
+              <FilterAccordion
+                activeFilters={activeFilters}
+                categories={categories}
+                toggleCategory={toggleCategory}
+                handlePriceChange={handlePriceChange}
+                colors={colors}
+                toggleColor={toggleColor}
+                sizes={sizes}
+                toggleSize={toggleSize}
+              />
+            }
+          />
 
           {/* Products Section */}
           <div className="flex-1">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-              <div>
-                <h2 className="text-xl font-bold">New Arrivals</h2>
-                <p className="text-muted-foreground text-sm">
-                  Showing {products.length} products
-                </p>
-              </div>
-
-              <div className="w-full sm:w-auto mt-4 sm:mt-0">
-                <Select
-                  value={activeFilters.sort}
-                  onValueChange={handleSortChange}
-                >
-                  <SelectTrigger className="w-full sm:w-[200px]">
-                    <SelectValue placeholder="Sort by" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {sortOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
+            <FilterTitleBelowSection
+              products={products}
+              activeFilters={activeFilters}
+              sortOptions={sortOptions}
+              handleSortChange={handleSortChange}
+            />
 
             {products.length === 0 ? (
-              <div className="text-center py-16 border rounded-lg">
-                <h3 className="text-lg font-medium mb-2">No products found</h3>
-                <p className="text-muted-foreground mb-6">
-                  Try adjusting your filters to find what you're looking for.
-                </p>
-                <Button onClick={clearAllFilters}>Clear All Filters</Button>
-              </div>
+              <FilterNoProductsFoundSection clearAllFilters={clearAllFilters} />
             ) : (
               <ProductGrid products={products} />
             )}
           </div>
         </div>
-      </div>
+      </Container>
     </>
   );
 }

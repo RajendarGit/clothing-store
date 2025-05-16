@@ -16,6 +16,7 @@ import { Heart, Minus, Plus, Share2, Star, Truck } from "lucide-react"
 import MainNav from "@/components/main-nav"
 import Footer from "@/components/footer"
 import { dummyProducts } from "@/data/products"
+import Container from "@/components/ui/container"
 
 export default function ProductPage() {
   const { id } = useParams()
@@ -83,7 +84,7 @@ export default function ProductPage() {
   }
 
   return (
-    <div className="container py-12">
+    <Container>
       <div className="grid md:grid-cols-2 gap-12">
         {/* Product Images */}
         <div className="space-y-4">
@@ -370,6 +371,6 @@ export default function ProductPage() {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </Container>
   );
 }

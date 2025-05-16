@@ -6,6 +6,7 @@ import { dummyProducts } from "@/data/products";
 import ProductGrid from "@/components/product-grid";
 import PageHero from "@/components/page-hero";
 import { Product } from "@/types/product";
+import Container from "@/components/ui/container";
 
 interface CategoryPageProps {
   params: {
@@ -31,11 +32,14 @@ const CategoryPage = ({ params: { name } }: CategoryPageProps) => {
   }, [name, router]);
 
   return (
-      <>
-      <PageHero title={name} description="sfgfdgdgdg" />
-    <div className="container py-12">
-      <ProductGrid products={categoryProducts} />
-    </div>
+    <>
+      <PageHero
+        title={name}
+        description={`${name} clothing and accessories collections`}
+      />
+      <Container>
+        <ProductGrid products={categoryProducts} />
+      </Container>
     </>
   );
 };

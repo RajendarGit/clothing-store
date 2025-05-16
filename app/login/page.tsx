@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import Container from "@/components/ui/container"
 
 // Define the form schema with Zod
 const loginSchema = z.object({
@@ -77,8 +78,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <MainNav />
-      <div className="container max-w-md mx-auto py-16 px-4">
+      <Container className="max-w-md mx-auto py-16 px-4">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold">Welcome Back</h1>
           <p className="text-muted-foreground mt-2">Sign in to your account to continue</p>
@@ -146,8 +146,7 @@ export default function LoginPage() {
             </div>
           </form>
         </Form>
-      </div>
-      <Footer />
+      </Container>
     </>
   )
 }

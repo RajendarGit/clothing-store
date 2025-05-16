@@ -1,30 +1,8 @@
 import Link from "next/link"
 import CategoriesCard from "./categories-card"
+import { categories } from "@/data/categories";
 
 export default function Categories() {
-  const categories = [
-    {
-      name: "Women",
-      image: "floral-summer-dress.jpg",
-      link: "/women",
-    },
-    {
-      name: "Men",
-      image: "casual-tshirt-men.jpg",
-      link: "/men",
-    },
-    {
-      name: "Kids",
-      image: "kid-denim.jpg",
-      link: "/kids",
-    },
-    {
-      name: "Accessories",
-      image: "leather.jpg",
-      link: "/accessories",
-    },
-  ]
-
   return (
     <section className="py-16 bg-muted/30">
       <div className="container">

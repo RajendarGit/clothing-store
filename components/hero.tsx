@@ -25,7 +25,7 @@ export default function Hero() {
           <Button size="lg" asChild>
             <Link href="/new-arrivals">Shop New Arrivals</Link>
           </Button>
-          <Button variant="outline" size="lg" className="text-white hover:border-white hover:bg-white/10" asChild>
+          <Button variant="outline" size="lg" className="text-white bg-white/10 dark:bg-black/90 dark:border-black/90" asChild>
             <Link href="/collections">Explore Collections</Link>
           </Button>
         </div>
