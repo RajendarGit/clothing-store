@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { dummyProducts } from "@/data/products";
 import ProductGrid from "@/components/product-grid";
@@ -14,8 +14,10 @@ interface CategoryPageProps {
   };
 }
 
-const CategoryPage = ({ params: { name } }: CategoryPageProps) => {
+const CategoryPage = () => {
   const router = useRouter();
+  const params = useParams();
+  const name = typeof params.name === "string" ? params.name : "";
   const [categoryProducts, setCategoryProducts] = useState<Product[]>([]); // ✅ use correct type
 
   useEffect(() => {

@@ -7,10 +7,11 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
+import { subscribeMessage } from "@/lib/messages"
 
 // Define the form schema with Zod
 const newsletterSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address" }),
+  email: z.string().email({ message: subscribeMessage.subscribeFailed }),
 })
 
 // Infer the type from the schema
@@ -31,7 +32,7 @@ export default function Newsletter() {
     // Here you would typically send the email to your API
     toast({
       title: "Success!",
-      description: "You've been subscribed to our newsletter",
+      description: subscribeMessage.subscribeSuccess,
     })
 
     form.reset()

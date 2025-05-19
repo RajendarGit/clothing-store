@@ -1,5 +1,5 @@
-import Link from "next/link"
-import CategoriesCard from "./categories-card"
+import Link from "next/link";
+import CategoriesCard from "./categories-card";
 import { categories } from "@/data/categories";
 
 export default function Categories() {
@@ -11,13 +11,7 @@ export default function Categories() {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {categories.map((category, index) => (
-            <Link
-              key={index}
-              href={`/category/${category.name}`}
-              className="group relative overflow-hidden rounded-lg h-80 block"
-            >
-              <CategoriesCard category={category} />
-            </Link>
+            <CategoriesCard key={index} category={category} />
           ))}
         </div>
       </div>

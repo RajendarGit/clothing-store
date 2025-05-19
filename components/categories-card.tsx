@@ -12,7 +12,11 @@ interface CategoriesCardProps {
 
 const CategoriesCard: React.FC<CategoriesCardProps> = ({ category }) => {
   return (
-    <>
+    <Link
+      key={category.name}
+      href={`/category/${category.name}`}
+      className="group relative overflow-hidden rounded-lg h-80 block"
+    >
       <Image
         src={`/assets/images/${category.image || "placeholder.svg"}`}
         alt={category.name || "Category Image"}
@@ -40,7 +44,7 @@ const CategoriesCard: React.FC<CategoriesCardProps> = ({ category }) => {
           </svg>
         </span>
       </div>
-    </>
+    </Link>
   );
 };
 
