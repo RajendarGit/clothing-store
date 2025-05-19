@@ -3,13 +3,6 @@
 import { useState, useEffect } from "react";
 import { dummyProducts } from "@/data/products";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import type { Product } from "@/types/product";
 import ProductGrid from "@/components/product-grid";
 import PageHero from "@/components/page-hero";

@@ -9,8 +9,8 @@ import type { Product } from "@/types/product"
 interface ProductCardProps {
   product: Product
   className?: string
-  onAddToCart: (product: Product) => void
-  onAddToWishlist: (product: Product) => void
+  onAddToCart?: (product: Product) => void
+  onAddToWishlist?: (product: Product) => void
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
