@@ -9,7 +9,10 @@ export default function Home() {
       <Hero />
       <Categories />
       <FeaturedProducts />
-      <Newsletter />
+      <Newsletter
+        title="Subscribe to Our Newsletter"
+        description="Stay updated with the latest trends, new arrivals, and exclusive offers."
+      />
     </main>
-  )
+  );
 }

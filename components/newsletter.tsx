@@ -1,52 +1,62 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { useToast } from "@/hooks/use-toast"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
-import { subscribeMessage } from "@/lib/messages"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { subscribeMessage } from "@/lib/messages";
 
-// Define the form schema with Zod
 const newsletterSchema = z.object({
   email: z.string().email({ message: subscribeMessage.subscribeFailed }),
-})
+});
 
-// Infer the type from the schema
-type NewsletterFormValues = z.infer<typeof newsletterSchema>
+type NewsletterFormValues = z.infer<typeof newsletterSchema>;
 
-export default function Newsletter() {
-  const { toast } = useToast()
+interface NewsletterProps {
+  title: string;
+  description: string;
+}
 
-  // Initialize React Hook Form with Zod validation
+const Newsletter: React.FC<NewsletterProps> = ({ title, description }) => {
+  const { toast } = useToast();
+
   const form = useForm<NewsletterFormValues>({
     resolver: zodResolver(newsletterSchema),
     defaultValues: {
       email: "",
     },
-  })
+  });
 
   const onSubmit = async (values: NewsletterFormValues) => {
-    // Here you would typically send the email to your API
     toast({
       title: "Success!",
       description: subscribeMessage.subscribeSuccess,
-    })
+    });
 
-    form.reset()
-  }
+    form.reset();
+  };
 
   return (
     <section className="py-16 bg-primary text-primary-foreground">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">Subscribe to Our Newsletter</h2>
-          <p className="mb-8 opacity-90">Stay updated with the latest trends, new arrivals, and exclusive offers.</p>
+          <h2 className="text-3xl font-bold mb-4">{title}</h2>
+          <p className="mb-8 opacity-90">{description}</p>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+            >
               <FormField
                 control={form.control}
                 name="email"
@@ -71,5 +81,8 @@ export default function Newsletter() {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
+
+export default Newsletter;
+

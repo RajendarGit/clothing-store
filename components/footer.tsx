@@ -115,18 +115,21 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-muted-foreground text-sm mb-4 md:mb-0">
+        <div className="border-t mt-12 pt-8 flex flex-col lg:flex-row justify-between items-center">
+          <p className="text-muted-foreground text-sm mb-4 lg:mb-0">
             &copy; {new Date().getFullYear()} Elegance. All rights reserved.
           </p>
-          <div className="flex space-x-4">
-            <Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary">
+          <p className="text-muted-foreground text-sm mb-4 lg:mb-0">
+            Designed and developed by Rajendar
+          </p>
+          <div className="flex flex-col md:flex-row justify-between items-center md:space-x-4">
+            <Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary mb-4 lg:mb-0">
               Privacy Policy
             </Link>
-            <Link href="/terms-of-service" className="text-sm text-muted-foreground hover:text-primary">
+            <Link href="/terms-of-service" className="text-sm text-muted-foreground hover:text-primary mb-4 lg:mb-0">
               Terms of Service
             </Link>
-            <Link href="/accessibility" className="text-sm text-muted-foreground hover:text-primary">
+            <Link href="/accessibility" className="text-sm text-muted-foreground hover:text-primary mb-4 lg:mb-0">
               Accessibility
             </Link>
           </div>

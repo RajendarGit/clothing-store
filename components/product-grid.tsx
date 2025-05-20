@@ -6,6 +6,7 @@ import type { RootState } from "@/redux/store"
 import { useToast } from "@/hooks/use-toast"
 import type { Product } from "@/types/product"
 import { ProductCard } from "./product-card"
+import { addToCartMessages, addToWishlistMessages } from "@/lib/messages"
 
 interface ProductGridProps {
   products: Product[]
@@ -19,8 +20,8 @@ export default function ProductGrid({ products }: ProductGridProps) {
   const handleAddToCart = (product: Product) => {
     if (!user) {
       toast({
-        title: "Please login",
-        description: "You need to login to add items to your cart",
+        title: addToCartMessages.loginRequiredTitle,
+        description: addToCartMessages.loginRequiredDescription,
         variant: "destructive",
       })
       return
@@ -28,16 +29,16 @@ export default function ProductGrid({ products }: ProductGridProps) {
 
     dispatch(addToCart(product))
     toast({
-      title: "Added to cart",
-      description: `${product.name} has been added to your cart`,
+      title: addToCartMessages.addedToCartTitle,
+      description: addToCartMessages.addedToCartDescription(product.name),
     })
   }
 
   const handleAddToWishlist = (product: Product) => {
     dispatch(addToWishlist(product))
     toast({
-      title: "Added to wishlist",
-      description: `${product.name} has been added to your wishlist`,
+      title: addToWishlistMessages.addedToWishlistTitle,
+      description: addToWishlistMessages.addedToWishlistDescription(product.name),
     })
   }
 

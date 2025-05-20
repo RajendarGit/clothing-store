@@ -33,7 +33,7 @@ export default function MainNav() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
-        <div className="md:hidden">
+        <div className="lg:hidden">
           <Button variant="ghost" size="icon" onClick={toggleMenu}>
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
@@ -43,7 +43,7 @@ export default function MainNav() {
           <Logo />
         </div>
 
-        <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+        <nav className="hidden lg:flex items-center space-x-6 text-sm font-medium">
           <div className="relative">
             <MegaMenuActiveButton menuKey="women" activeMegaMenu={"women"} toggleMegaMenu={toggleMegaMenu} />
             {activeMegaMenu === "women" && <MegaMenu activeMegaMenu="women" />}
@@ -105,7 +105,7 @@ export default function MainNav() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden border-t">
+        <div className="lg:hidden border-t">
           <div className="container py-4">
             <nav className="flex flex-col space-y-4">
               <Link href="/women" className="flex justify-between items-center py-2 border-b">

@@ -26,10 +26,6 @@ export default function FeaturedProducts() {
     : dummyProducts.filter((product) => product.category === selectedCategory).slice(0, 8)
 }, [selectedCategory])
 
-console.log("selectedCategory:", selectedCategory)
-console.log("filteredProducts:", filteredProducts.map(p => p.name))
-
-
   const handleAddToCart = (product: Product) => {
     if (!user) {
       toast({
