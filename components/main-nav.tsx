@@ -1,41 +1,67 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { ShoppingBag, Search, Menu, X, Heart, ChevronDown } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { useSelector } from "react-redux"
-import type { RootState } from "@/redux/store"
-import { ModeToggle } from "./mode-toggle"
-import Logo from "./logo"
-import MegaMenu from "./mega-menu"
-import MegaMenuActiveButton from "./mega-menu-active-button"
-import MegaMenuUserMenu from "./mega-menu-user-menu"
+import { useRef, useState } from "react";
+import Link from "next/link";
+import { ShoppingBag, Search, Menu, X, Heart, ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/store";
+import { ModeToggle } from "./mode-toggle";
+import Logo from "./logo";
+import MegaMenu from "./mega-menu";
+import MegaMenuActiveButton from "./mega-menu-active-button";
+import MegaMenuUserMenu from "./mega-menu-user-menu";
+import useClickOutside from "@/hooks/use-click-outside";
+import Container from "./ui/container";
 
 export default function MainNav() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [activeMegaMenu, setActiveMegaMenu] = useState<"women" | "men" | "kids" | "accessories" | null>(null)
-  const { items } = useSelector((state: RootState) => state.cart)
-  const { user } = useSelector((state: RootState) => state.auth)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeMegaMenu, setActiveMegaMenu] = useState<
+    "women" | "men" | "kids" | "accessories" | null
+  >(null);
+  const { items } = useSelector((state: RootState) => state.cart);
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  const womenRef = useRef<HTMLDivElement>(null);
+  const menRef = useRef<HTMLDivElement>(null);
+  const kidsRef = useRef<HTMLDivElement>(null);
+  const accessoriesRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
+    setIsMenuOpen(!isMenuOpen);
+  };
 
-  const toggleMegaMenu = (category: "women" | "men" | "kids" | "accessories") => {
-    if (activeMegaMenu === category) {
-      setActiveMegaMenu(null)
-    } else {
-      setActiveMegaMenu(category)
-    }
-  }
+  const toggleMegaMenu = (category: typeof activeMegaMenu) => {
+    setActiveMegaMenu((prev) => (prev === category ? null : category));
+  };
+
+  useClickOutside(
+    womenRef as React.RefObject<HTMLElement>,
+    () => activeMegaMenu === "women" && setActiveMegaMenu(null)
+  );
+  useClickOutside(
+    menRef as React.RefObject<HTMLElement>,
+    () => activeMegaMenu === "men" && setActiveMegaMenu(null)
+  );
+  useClickOutside(
+    kidsRef as React.RefObject<HTMLElement>,
+    () => activeMegaMenu === "kids" && setActiveMegaMenu(null)
+  );
+  useClickOutside(
+    accessoriesRef as React.RefObject<HTMLElement>,
+    () => activeMegaMenu === "accessories" && setActiveMegaMenu(null)
+  );
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center">
+      <Container className="flex h-16 items-center py-4">
         <div className="lg:hidden">
           <Button variant="ghost" size="icon" onClick={toggleMenu}>
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {isMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
           </Button>
         </div>
 
@@ -44,30 +70,45 @@ export default function MainNav() {
         </div>
 
         <nav className="hidden lg:flex items-center space-x-6 text-sm font-medium">
-          <div className="relative">
-            <MegaMenuActiveButton menuKey="women" activeMegaMenu={"women"} toggleMegaMenu={toggleMegaMenu} />
+          <div ref={womenRef} className="relative">
+            <MegaMenuActiveButton
+              menuKey="women"
+              activeMegaMenu={activeMegaMenu}
+              toggleMegaMenu={toggleMegaMenu}
+            />
             {activeMegaMenu === "women" && <MegaMenu activeMegaMenu="women" />}
           </div>
 
-          <div className="relative">
-            <MegaMenuActiveButton menuKey="men" activeMegaMenu={"men"} toggleMegaMenu={toggleMegaMenu} />
+          <div ref={menRef} className="relative">
+            <MegaMenuActiveButton
+              menuKey="men"
+              activeMegaMenu={activeMegaMenu}
+              toggleMegaMenu={toggleMegaMenu}
+            />
             {activeMegaMenu === "men" && <MegaMenu activeMegaMenu="men" />}
-
           </div>
 
-          <div className="relative">
-            <MegaMenuActiveButton menuKey="kids" activeMegaMenu={"kids"} toggleMegaMenu={toggleMegaMenu} />
+          <div ref={kidsRef} className="relative">
+            <MegaMenuActiveButton
+              menuKey="kids"
+              activeMegaMenu={activeMegaMenu}
+              toggleMegaMenu={toggleMegaMenu}
+            />
             {activeMegaMenu === "kids" && <MegaMenu activeMegaMenu="kids" />}
           </div>
 
-          <div className="relative">
-            <MegaMenuActiveButton menuKey="accessories" activeMegaMenu={"accessories"} toggleMegaMenu={toggleMegaMenu} />
-            {activeMegaMenu === "accessories" && <MegaMenu activeMegaMenu="accessories" />}
+          <div ref={accessoriesRef} className="relative">
+            <MegaMenuActiveButton
+              menuKey="accessories"
+              activeMegaMenu={activeMegaMenu}
+              toggleMegaMenu={toggleMegaMenu}
+            />
+            {activeMegaMenu === "accessories" && (
+              <MegaMenu activeMegaMenu="accessories" />
+            )}
           </div>
 
-          <Link href="/sale" className="text-foreground hover:text-primary">
-            Sale
-          </Link>
+          <Link href="/sale">Sale</Link>
         </nav>
 
         <div className="ml-auto flex items-center space-x-4">
@@ -101,30 +142,45 @@ export default function MainNav() {
             </Link>
           </Button>
         </div>
-      </div>
+      </Container>
 
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="lg:hidden border-t">
           <div className="container py-4">
             <nav className="flex flex-col space-y-4">
-              <Link href="/women" className="flex justify-between items-center py-2 border-b">
+              <Link
+                href="/women"
+                className="flex justify-between items-center py-2 border-b"
+              >
                 Women
                 <ChevronDown className="h-4 w-4" />
               </Link>
-              <Link href="/men" className="flex justify-between items-center py-2 border-b">
+              <Link
+                href="/men"
+                className="flex justify-between items-center py-2 border-b"
+              >
                 Men
                 <ChevronDown className="h-4 w-4" />
               </Link>
-              <Link href="/kids" className="flex justify-between items-center py-2 border-b">
+              <Link
+                href="/kids"
+                className="flex justify-between items-center py-2 border-b"
+              >
                 Kids
                 <ChevronDown className="h-4 w-4" />
               </Link>
-              <Link href="/accessories" className="flex justify-between items-center py-2 border-b">
+              <Link
+                href="/accessories"
+                className="flex justify-between items-center py-2 border-b"
+              >
                 Accessories
                 <ChevronDown className="h-4 w-4" />
               </Link>
-              <Link href="/sale" className="flex justify-between items-center py-2 border-b">
+              <Link
+                href="/sale"
+                className="flex justify-between items-center py-2 border-b"
+              >
                 Sale
               </Link>
             </nav>
@@ -132,5 +188,5 @@ export default function MainNav() {
         </div>
       )}
     </header>
-  )
+  );
 }

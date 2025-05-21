@@ -37,7 +37,7 @@ const SaleTabContent: React.FC<SaleTabContentProps> = ({
       <TabsContent value="all">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Link
-            href="#women-sale"
+            href="#sale-products"
             className="group relative overflow-hidden rounded-lg aspect-[4/3] block"
           >
             <Image
@@ -61,7 +61,7 @@ const SaleTabContent: React.FC<SaleTabContentProps> = ({
             </div>
           </Link>
           <Link
-            href="#men-sale"
+            href="#sale-products"
             className="group relative overflow-hidden rounded-lg aspect-[4/3] block"
           >
             <Image
@@ -83,7 +83,7 @@ const SaleTabContent: React.FC<SaleTabContentProps> = ({
             </div>
           </Link>
           <Link
-            href="#accessories-sale"
+            href="#sale-products"
             className="group relative overflow-hidden rounded-lg aspect-[4/3] block"
           >
             <Image

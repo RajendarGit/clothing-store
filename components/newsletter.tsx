@@ -13,11 +13,11 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { subscribeMessage } from "@/lib/messages";
 import Container from "./ui/container";
+import { formMessages } from "@/lib/messages";
 
 const newsletterSchema = z.object({
-  email: z.string().email({ message: subscribeMessage.subscribeFailed }),
+  email: z.string().email({ message: formMessages.invalidEmail }),
 });
 
 type NewsletterFormValues = z.infer<typeof newsletterSchema>;
@@ -47,7 +47,7 @@ const Newsletter: React.FC<NewsletterProps> = ({
   const onSubmit = async (values: NewsletterFormValues) => {
     toast({
       title: "Success!",
-      description: subscribeMessage.subscribeSuccess,
+      description: formMessages.subscribeSuccess,
     });
 
     form.reset();

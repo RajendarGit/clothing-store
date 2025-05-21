@@ -2,6 +2,7 @@ import { Collection } from "@/types/collections";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import Container from "./ui/container";
 
 interface RelatedCollectionsProps {
   collections: Collection[];
@@ -14,7 +15,7 @@ const RelatedCollections: React.FC<RelatedCollectionsProps> = ({
 }) => {
   return (
     <section className="py-12 bg-muted/30">
-      <div className="container">
+      <Container>
         <h2 className="text-2xl font-bold mb-8">You May Also Like</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {collections
@@ -28,7 +29,7 @@ const RelatedCollections: React.FC<RelatedCollectionsProps> = ({
               >
                 <div
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                  style={{ backgroundImage: `url(${collection.image})` }}
+                  style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/banner/${collection.image})` }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                 <div className="absolute bottom-0 left-0 p-6">
@@ -43,7 +44,7 @@ const RelatedCollections: React.FC<RelatedCollectionsProps> = ({
               </Link>
             ))}
         </div>
-      </div>
+      </Container>
     </section>
   );
 };
