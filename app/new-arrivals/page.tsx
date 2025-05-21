@@ -9,9 +9,14 @@ import PageHero from "@/components/page-hero";
 import Container from "@/components/ui/container";
 import ActiveFilterSection from "@/components/active-filter-section";
 import MobileFilterButton from "@/components/mobile-filter-button";
-import FilterAccordion from "@/components/filter-accordion";
 import FilterTitleBelowSection from "@/components/filter-title-below-section";
 import FilterNoProductsFoundSection from "@/components/filter-no-products-found-section";
+import FilterCategories from "@/components/filter-categories";
+import FilterPriceRange from "@/components/filter-price-range";
+import FilterColors from "@/components/filter-colors";
+import FilterSizes from "@/components/filter-sizes";
+import { Accordion } from "@/components/ui/accordion";
+import DesktopFilterSection from "@/components/desktop-filter-section";
 
 // Get only new products (for demo, we'll use isNew flag or just take the first 12 products)
 const newArrivals = dummyProducts
@@ -218,6 +223,46 @@ export default function NewArrivalsPage() {
       ? 1
       : 0);
 
+  const FILTER_ACCORDION_DEFAULT_VALUES = [
+    "categories",
+    "price",
+    "colors",
+    "sizes",
+  ];
+
+  const ActiveFilterAccordion = () => {
+    return (
+      <Accordion
+        type="multiple"
+        defaultValue={FILTER_ACCORDION_DEFAULT_VALUES}
+        className="space-y-4"
+      >
+        <FilterCategories
+          categories={categories}
+          activeFilters={activeFilters}
+          toggleCategory={toggleCategory}
+        />
+
+        <FilterPriceRange
+          activeFilters={activeFilters}
+          handlePriceChange={handlePriceChange}
+        />
+
+        <FilterColors
+          colors={colors}
+          activeFilters={activeFilters}
+          toggleColor={toggleColor}
+        />
+
+        <FilterSizes
+          sizes={sizes}
+          activeFilters={activeFilters}
+          toggleSize={toggleSize}
+        />
+      </Accordion>
+    );
+  };
+
   return (
     <>
       {/* Hero Banner */}
@@ -233,38 +278,32 @@ export default function NewArrivalsPage() {
           clearAllFilters={clearAllFilters}
           activeFilters={activeFilters}
           removeFilter={removeFilter}
+          filterTypes={[
+            { key: "categories" },
+            {
+              key: "colors",
+              render: (color) => (
+                <span
+                  className="w-3 h-3 rounded-full mr-1"
+                  style={{ backgroundColor: color }}
+                />
+              ),
+            },
+            {
+              key: "sizes",
+              render: (size) => <>Size: {size}</>,
+            },
+          ]}
         />
 
         <div className="flex flex-col md:flex-row gap-8">
           {/* Desktop Filters */}
-          <div className="hidden md:block w-64 flex-shrink-0">
-            <div className="sticky top-24">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold">Filters</h2>
-                {activeFilterCount > 0 && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={clearAllFilters}
-                    className="text-muted-foreground text-sm"
-                  >
-                    Clear All
-                  </Button>
-                )}
-              </div>
-
-              <FilterAccordion
-                activeFilters={activeFilters}
-                categories={categories}
-                toggleCategory={toggleCategory}
-                handlePriceChange={handlePriceChange}
-                colors={colors}
-                toggleColor={toggleColor}
-                sizes={sizes}
-                toggleSize={toggleSize}
-              />
-            </div>
-          </div>
+          <DesktopFilterSection
+            activeFilterCount={activeFilterCount}
+            clearAllFilters={clearAllFilters}
+          >
+            <ActiveFilterAccordion />
+          </DesktopFilterSection>
 
           {/* Mobile Filter Button */}
           <MobileFilterButton
@@ -272,18 +311,7 @@ export default function NewArrivalsPage() {
             setMobileFiltersOpen={setMobileFiltersOpen}
             activeFilterCount={activeFilterCount}
             clearAllFilters={clearAllFilters}
-            FilterAccordion={
-              <FilterAccordion
-                activeFilters={activeFilters}
-                categories={categories}
-                toggleCategory={toggleCategory}
-                handlePriceChange={handlePriceChange}
-                colors={colors}
-                toggleColor={toggleColor}
-                sizes={sizes}
-                toggleSize={toggleSize}
-              />
-            }
+            FilterAccordion={<ActiveFilterAccordion />}
           />
 
           {/* Products Section */}

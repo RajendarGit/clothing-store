@@ -14,7 +14,7 @@ const CategoriesCard: React.FC<CategoriesCardProps> = ({ category }) => {
   return (
     <Link
       key={category.name}
-      href={`/category/${category.name}`}
+        href={`/category/${category.name.toLowerCase()}`}
       className="group relative overflow-hidden rounded-lg h-80 block"
     >
       <Image

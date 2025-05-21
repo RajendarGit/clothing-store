@@ -41,7 +41,7 @@ const SaleTabContent: React.FC<SaleTabContentProps> = ({
             className="group relative overflow-hidden rounded-lg aspect-[4/3] block"
           >
             <Image
-              src="/placeholder.svg?height=600&width=800"
+              src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/banner/women-sale.jpg`}
               alt="Women's Sale"
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -65,7 +65,7 @@ const SaleTabContent: React.FC<SaleTabContentProps> = ({
             className="group relative overflow-hidden rounded-lg aspect-[4/3] block"
           >
             <Image
-              src="/placeholder.svg?height=600&width=800"
+              src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/banner/men-sale.jpg`}
               alt="Men's Sale"
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -87,7 +87,7 @@ const SaleTabContent: React.FC<SaleTabContentProps> = ({
             className="group relative overflow-hidden rounded-lg aspect-[4/3] block"
           >
             <Image
-              src="/placeholder.svg?height=600&width=800"
+              src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/banner/assessories-sale.jpg`}
               alt="Accessories Sale"
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"

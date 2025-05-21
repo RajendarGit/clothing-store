@@ -6,13 +6,10 @@ export default function Hero() {
   return (
     <section className="relative h-[600px] overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <Image
-          src="/assets/images/banner/banner.jpg"
-          alt="Elegance in Every Stitch"
-          fill
-          className="object-cover"
-          priority
-        />
+        <video autoPlay loop muted className="absolute inset-0 object-cover w-full h-full">
+          <source src="/assets/images/banner/banner.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
         <div className="absolute inset-0 bg-black/40" />
       </div>
 

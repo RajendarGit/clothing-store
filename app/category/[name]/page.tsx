@@ -36,8 +36,10 @@ const CategoryPage = () => {
   return (
     <>
       <PageHero
-        title={name}
-        description={`${name} clothing and accessories collections`}
+        title={name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()}
+        description={`${
+          name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
+        } clothing and accessories collections`}
       />
       <Container>
         <ProductGrid products={categoryProducts} />

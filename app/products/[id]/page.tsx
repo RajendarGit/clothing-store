@@ -170,12 +170,8 @@ export default function ProductPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3">
-            {/* <Button size="lg" className="flex-1" onClick={handleAddToCart}>
-              Add to Cart
-            </Button> */}
             <AddToCart product={product} onAddToCart={handleAddToCart} />
             <AddToWishlist product={product} onAddToWishlist={handleAddToWishlist} productPage={true} />
-            
           </div>
 
           <div className="border-t pt-4">

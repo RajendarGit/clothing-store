@@ -14,6 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { subscribeMessage } from "@/lib/messages";
+import Container from "./ui/container";
 
 const newsletterSchema = z.object({
   email: z.string().email({ message: subscribeMessage.subscribeFailed }),
@@ -24,9 +25,16 @@ type NewsletterFormValues = z.infer<typeof newsletterSchema>;
 interface NewsletterProps {
   title: string;
   description: string;
+  className?: string;
+  primaryBG?: boolean;
 }
 
-const Newsletter: React.FC<NewsletterProps> = ({ title, description }) => {
+const Newsletter: React.FC<NewsletterProps> = ({
+  title,
+  description,
+  className,
+  primaryBG = true,
+}) => {
   const { toast } = useToast();
 
   const form = useForm<NewsletterFormValues>({
@@ -46,8 +54,12 @@ const Newsletter: React.FC<NewsletterProps> = ({ title, description }) => {
   };
 
   return (
-    <section className="py-16 bg-primary text-primary-foreground">
-      <div className="container">
+    <section
+      className={`py-6 ${
+        primaryBG ? "bg-primary text-primary-foreground" : "bg-muted/50"
+      } ${className}`}
+    >
+      <Container>
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">{title}</h2>
           <p className="mb-8 opacity-90">{description}</p>
@@ -73,16 +85,22 @@ const Newsletter: React.FC<NewsletterProps> = ({ title, description }) => {
                   </FormItem>
                 )}
               />
-              <Button type="submit" variant="secondary">
+              <Button
+                type="submit"
+                className={
+                  primaryBG
+                    ? "bg-muted/50 text-white hover:bg-muted/30"
+                    : "bg-primary text-primary-foreground"
+                }
+              >
                 Subscribe
               </Button>
             </form>
           </Form>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };
 
 export default Newsletter;
-

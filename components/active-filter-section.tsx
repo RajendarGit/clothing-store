@@ -1,57 +1,42 @@
-import React from 'react'
+import React from 'react';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
 import { X } from 'lucide-react';
-import { FilterKey } from '@/types/filter-key';
-import { ActiveFilters } from './active-filters';
 
-const ActiveFilterSection: React.FC<{
+export interface FilterType {
+  key: string;
+  render?: (value: any) => React.ReactNode;
+}
+
+interface ActiveFilterSectionProps {
   activeFilterCount: number;
-  activeFilters: ActiveFilters;
-  removeFilter: (key: FilterKey, value: string) => void;
+  activeFilters: Record<string, any>;
+  removeFilter: (key: string, value: any) => void;
   clearAllFilters: () => void;
-}> = ({
+  filterTypes: FilterType[];
+}
+
+const ActiveFilterSection: React.FC<ActiveFilterSectionProps> = ({
   activeFilterCount,
   activeFilters,
   removeFilter,
   clearAllFilters,
+  filterTypes,
 }) => {
   if (activeFilterCount === 0) return null;
-
-  const filterTypes: {
-    key: FilterKey;
-    render?: (value: string) => React.ReactNode;
-  }[] = [
-    {
-      key: 'categories',
-    },
-    {
-      key: 'colors',
-      render: (color) => (
-        <span
-          className="w-3 h-3 rounded-full mr-1"
-          style={{ backgroundColor: color }}
-        />
-      ),
-    },
-    {
-      key: 'sizes',
-      render: (size) => <>Size: {size}</>,
-    },
-  ];
 
   return (
     <div className="mb-6 flex flex-wrap gap-2 items-center">
       <span className="text-sm font-medium">Active Filters:</span>
 
       {filterTypes.map(({ key, render }) =>
-        activeFilters[key].map((value) => (
+        (Array.isArray(activeFilters[key]) ? activeFilters[key] : []).map((value: any) => (
           <Badge
-            key={`${key}-${value}`}
+            key={`${key}-${JSON.stringify(value)}`}
             variant="secondary"
             className="flex items-center gap-1"
           >
-            {render ? render(value) : value}
+            {render ? render(value) : String(value)}
             <button onClick={() => removeFilter(key, value)}>
               <X className="h-3 w-3" />
             </button>
@@ -59,12 +44,13 @@ const ActiveFilterSection: React.FC<{
         ))
       )}
 
-      {(Number(activeFilters.priceRange[0]) > 0 ||
-        Number(activeFilters.priceRange[1]) < 200) && (
-        <Badge variant="secondary" className="flex items-center gap-1">
-          ${activeFilters.priceRange[0]} - ${activeFilters.priceRange[1]}
-        </Badge>
-      )}
+      {/* Optional: handle priceRange separately */}
+      {'priceRange' in activeFilters &&
+        (activeFilters.priceRange[0] > 0 || activeFilters.priceRange[1] < 200) && (
+          <Badge variant="secondary" className="flex items-center gap-1">
+            ${activeFilters.priceRange[0]} - ${activeFilters.priceRange[1]}
+          </Badge>
+        )}
 
       <Button
         variant="ghost"

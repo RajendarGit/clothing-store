@@ -20,7 +20,7 @@ const AddToWishlist: FC<AddToWishlistProps> = ({
   return (
     <Button
       variant="ghost"
-      size="icon"
+      size="sm"
       className={buttonClass}
       onClick={(e) => {
         e.preventDefault();
