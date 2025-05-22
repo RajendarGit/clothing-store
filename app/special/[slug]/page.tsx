@@ -16,7 +16,7 @@ import InnerHero from "@/components/inner-hero";
 import NoProducts from "@/components/no-products";
 import RelatedCollections from "@/components/related-collections";
 
-export default function CollectionPage() {
+export default function SpecialPage() {
   const { slug } = useParams();
   const [collection, setCollection] = useState<Collection | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
@@ -24,33 +24,15 @@ export default function CollectionPage() {
   useEffect(() => {
     // Find the collection by slug
     const allCollections = [
-      ...collections.featured,
-      ...collections.seasonal,
-      ...collections.thematic,
-      ...collections.special,
       ...collections.sarees,
     ];
 
     const foundCollection = allCollections.find((c) => c.id === slug);
     setCollection(foundCollection || null);
 
-    // Filter products for this collection (in a real app, this would be an API call)
-    // For demo purposes, we'll just use a subset of dummy products
-    const filteredProducts = dummyProducts.filter((_, index) => {
-      // Use different filtering logic based on collection type
-      if (slug === "new-arrivals") {
-        return index % 2 === 0; // Even indexed products
-      } else if (slug === "sale") {
-        return index % 3 === 0; // Every third product
-      } else if (slug === "bestsellers") {
-        return index % 4 === 0; // Every fourth product
-      } else {
-        // Random selection for other collections
-        return Math.random() > 0.5;
-      }
-    });
+    const filterProducts = dummyProducts.filter((product) => product.subcategory === "sarees");
 
-    setProducts(filteredProducts);
+    setProducts(filterProducts);
   }, [slug]);
 
   if (!collection) {
@@ -88,7 +70,7 @@ export default function CollectionPage() {
 
       {/* Related Collections */}
       <RelatedCollections
-        collections={collections.featured}
+        collections={collections.special}
         slug={String(slug)}
       />
     </>

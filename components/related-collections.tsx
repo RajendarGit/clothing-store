@@ -14,8 +14,8 @@ const RelatedCollections: React.FC<RelatedCollectionsProps> = ({
   slug,
 }) => {
   return (
-    <section className="py-12 bg-muted/30">
-      <Container>
+    <section className="bg-muted/30">
+      <Container className="px-0">
         <h2 className="text-2xl font-bold mb-8">You May Also Like</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {collections

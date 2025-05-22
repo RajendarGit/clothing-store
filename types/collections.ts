@@ -13,7 +13,8 @@ export type CollectionCategory =
   | 'featured'
   | 'seasonal'
   | 'thematic'
-  | 'special';
+  | 'special'
+  | 'sarees';
 
 export type CategorizedCollections = {
   [key in CollectionCategory]: Collection[];

@@ -13,6 +13,7 @@ import { ProductCard } from "./product-card"
 import FeaturedProductsFilter from "./featured-products-filter"
 import { Button } from "@/components/ui/button"
 import { dummyProducts } from "@/data/products"
+import Container from "./ui/container"
 
 export default function FeaturedProducts() {
   const dispatch = useDispatch()
@@ -52,8 +53,8 @@ export default function FeaturedProducts() {
   }
 
   return (
-    <section className="py-16">
-      <div className="container">
+    <section>
+      <Container>
         <h2 className="text-3xl font-bold text-center mb-4">Featured Products</h2>
         <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
           Discover our handpicked selection of premium clothing and accessories
@@ -80,7 +81,7 @@ export default function FeaturedProducts() {
             <Link href="/products">View All Products</Link>
           </Button>
         </div>
-      </div>
+      </Container>
     </section>
   )
 }

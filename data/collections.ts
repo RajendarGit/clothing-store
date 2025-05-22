@@ -105,4 +105,14 @@ export const collections: CategorizedCollections = {
       category: "special",
     },
   ],
+  sarees: [
+    {
+      id: "sarees",
+      title: "Sarees",
+      description: "Exquisite sarees for special occasions.",
+      image: "sarees.jpg",
+      link: "/sarees",
+      category: "special",
+    },
+  ]
 };
