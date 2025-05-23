@@ -9,19 +9,18 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
-import MainNav from "@/components/main-nav"
-import Footer from "@/components/footer"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import Container from "@/components/ui/container"
+import { formMessages } from "@/lib/messages"
 
 // Define the form schema with Zod
 const loginSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address" }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters" }),
-  rememberMe: z.boolean().default(false),
+  email: z.string().email({ message: formMessages.invalidEmail }),
+  password: z.string().min(6, { message: formMessages.passwordValidation }),
+  rememberMe: z.boolean(),
 })
 
 // Infer the type from the schema
@@ -59,8 +58,8 @@ export default function LoginPage() {
         )
 
         toast({
-          title: "Login successful",
-          description: "Welcome back to Elegance!",
+          title: formMessages.loginSuccessTitle,
+          description: formMessages.loginSuccessDescription,
         })
 
         router.push("/")
@@ -68,8 +67,8 @@ export default function LoginPage() {
       }, 1000)
     } catch (error) {
       toast({
-        title: "Login failed",
-        description: "Invalid email or password",
+        title: formMessages.loginErrorTitle,
+        description: formMessages.loginErrorDescription,
         variant: "destructive",
       })
       setIsLoading(false)

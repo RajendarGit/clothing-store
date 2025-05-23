@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,6 +9,10 @@ import ProductDiscount from "./product-discount";
 import AddToWishlist from "./add-to-wishlist";
 import AddToCart from "./add-to-cart";
 import ProductDiscountNew from "./product-discount-new";
+import { removeFromCart } from "@/redux/features/cart-slice";
+import { useAppDispatch } from "@/hooks/use-app-dispatch";
+import { useAppSelector } from "@/hooks/use-app-selector";
+import RemoveFromCart from "./remove-from-cart";
 
 interface ProductCardProps {
   product: Product;
@@ -21,6 +27,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   onAddToCart,
   onAddToWishlist,
 }) => {
+  const dispatch = useAppDispatch();
+
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const cartItems = useAppSelector((state) => state.cart.items);
+
+  const isInCart = cartItems.some(
+    (item) =>
+      item.id === product.id &&
+      item.selectedColor === product.selectedColor &&
+      item.selectedSize === product.selectedSize
+  );
+
+  const handleRemoveFromCart = () => {
+    dispatch(removeFromCart(product.id));
+  };
+
   return (
     <div
       className={`product-card group bg-background rounded-lg border overflow-hidden ${className}`}
@@ -41,7 +63,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           product={{ isNew: !!product.isNew, discount: product.discount ?? 0 }}
         />
 
-        <AddToWishlist product={product} onAddToWishlist={onAddToWishlist} />
+        {/* ✅ Show wishlist button only when user is authenticated */}
+        {isAuthenticated && (
+          <AddToWishlist product={product} onAddToWishlist={onAddToWishlist} />
+        )}
       </div>
 
       <div className="p-4">
@@ -61,8 +86,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <div className="flex space-x-1">
             <ProductColor colors={product.colors} />
           </div>
-
-          <AddToCart product={product} onAddToCart={onAddToCart} />
+          {isAuthenticated && isInCart ? (
+            <RemoveFromCart handleRemoveFromCart={handleRemoveFromCart} />
+          ) : (
+            <>
+              {isAuthenticated && onAddToCart ? (
+                <AddToCart product={product} onAddToCart={onAddToCart} />
+              ) : (
+                <Link href="/login">
+                  <AddToCart product={product} link={true} />
+                </Link>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>

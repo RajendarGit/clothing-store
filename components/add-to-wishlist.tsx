@@ -6,12 +6,14 @@ interface AddToWishlistProps {
   productPage?: boolean;
   onAddToWishlist?: (product: any) => void;
   product: any;
+  link?: boolean;
 }
 
 const AddToWishlist: FC<AddToWishlistProps> = ({
   productPage = false,
   onAddToWishlist,
   product,
+  link = false,
 }) => {
   const buttonClass = productPage
     ? "btn-ghost w-auto px-3"
@@ -22,10 +24,14 @@ const AddToWishlist: FC<AddToWishlistProps> = ({
       variant="ghost"
       size="sm"
       className={buttonClass}
-      onClick={(e) => {
-        e.preventDefault();
-        onAddToWishlist?.(product);
-      }}
+      onClick={
+        link
+          ? undefined
+          : (e) => {
+              e.preventDefault();
+              onAddToWishlist?.(product);
+            }
+      }
     >
       <Heart className="h-5 w-5" />
       <span className={productPage ? "" : "sr-only"}>Add to wishlist</span>

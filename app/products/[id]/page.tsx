@@ -1,46 +1,59 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
-import { useParams } from "next/navigation"
-import { useDispatch, useSelector } from "react-redux"
-import { addToCart } from "@/redux/features/cart-slice"
-import { addToWishlist } from "@/redux/features/wishlist-slice"
-import type { RootState } from "@/redux/store"
-import { useToast } from "@/hooks/use-toast"
-import { Button } from "@/components/ui/button"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Heart, Minus, Plus, Share2, Star, Truck } from "lucide-react"
-import MainNav from "@/components/main-nav"
-import Footer from "@/components/footer"
-import { dummyProducts } from "@/data/products"
-import Container from "@/components/ui/container"
-import ProductActiveImageList from "@/components/product-active-image-list"
-import ProductRating from "@/components/product-rating"
-import ProductReviewCount from "@/components/product-review-count"
-import ProductDiscountWithPrice from "@/components/product-discount-with-price"
-import ProductColorRanges from "@/components/product-color-ranges"
-import ProductSizeRanges from "@/components/product-size-ranges"
-import ProductQuantityOptions from "@/components/product-quantity-options"
-import AddToCart from "@/components/add-to-cart"
-import AddToWishlist from "@/components/add-to-wishlist"
-import ProductDescriptionDetailsReview from "@/components/product-description-details-review"
+import { useState } from "react";
+import Image from "next/image";
+import { useParams } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, removeFromCart } from "@/redux/features/cart-slice";
+import { addToWishlist } from "@/redux/features/wishlist-slice";
+import type { RootState } from "@/redux/store";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Heart, Minus, Plus, Share2, Star, Truck } from "lucide-react";
+import MainNav from "@/components/main-nav";
+import Footer from "@/components/footer";
+import { dummyProducts } from "@/data/products";
+import Container from "@/components/ui/container";
+import ProductActiveImageList from "@/components/product-active-image-list";
+import ProductRating from "@/components/product-rating";
+import ProductReviewCount from "@/components/product-review-count";
+import ProductDiscountWithPrice from "@/components/product-discount-with-price";
+import ProductColorRanges from "@/components/product-color-ranges";
+import ProductSizeRanges from "@/components/product-size-ranges";
+import ProductQuantityOptions from "@/components/product-quantity-options";
+import AddToCart from "@/components/add-to-cart";
+import AddToWishlist from "@/components/add-to-wishlist";
+import ProductDescriptionDetailsReview from "@/components/product-description-details-review";
+import { useAppSelector } from "@/hooks/use-app-selector";
+import RemoveFromCart from "@/components/remove-from-cart";
+import Link from "next/link";
+import AddReduceProductQuantity from "@/components/add-reduce-product-quantity";
 
 export default function ProductPage() {
-  const { id } = useParams()
-  const dispatch = useDispatch()
-  const { toast } = useToast()
-  const { user } = useSelector((state: RootState) => state.auth)
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { toast } = useToast();
+  const { user } = useSelector((state: RootState) => state.auth);
 
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const cartItems = useAppSelector((state) => state.cart.items);
+
+  
+  const handleRemoveFromCart = () => {
+    dispatch(removeFromCart(product.id));
+  };
+  
   // Find the product by ID
-  const product = dummyProducts.find((p) => p.id === Number(id)) || dummyProducts[0]
+  const product = dummyProducts.find((p) => p.id === Number(id)) || dummyProducts[0];
+  const isInCart = cartItems.some((item) => item.id === product.id);
 
-  const [selectedColor, setSelectedColor] = useState(product.colors[0])
-  const [selectedSize, setSelectedSize] = useState("M")
-  const [quantity, setQuantity] = useState(1)
-  const [activeImage, setActiveImage] = useState(0)
+  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
+  const [selectedSize, setSelectedSize] = useState("M");
+  const [quantity, setQuantity] = useState(1);
+  const [activeImage, setActiveImage] = useState(0);
 
   // Generate additional images for the product
   const productImages = [
@@ -48,7 +61,7 @@ export default function ProductPage() {
     "/placeholder.svg?height=800&width=600",
     "/placeholder.svg?height=800&width=600",
     "/placeholder.svg?height=800&width=600",
-  ]
+  ];
 
   const handleAddToCart = () => {
     if (!user) {
@@ -56,8 +69,8 @@ export default function ProductPage() {
         title: "Please login",
         description: "You need to login to add items to your cart",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
     dispatch(
@@ -66,32 +79,32 @@ export default function ProductPage() {
         quantity,
         selectedColor,
         selectedSize,
-      }),
-    )
+      })
+    );
 
     toast({
       title: "Added to cart",
       description: `${product.name} has been added to your cart`,
-    })
-  }
+    });
+  };
 
   const handleAddToWishlist = () => {
-    dispatch(addToWishlist(product))
+    dispatch(addToWishlist(product));
     toast({
       title: "Added to wishlist",
       description: `${product.name} has been added to your wishlist`,
-    })
-  }
+    });
+  };
 
   const decreaseQuantity = () => {
     if (quantity > 1) {
-      setQuantity(quantity - 1)
+      setQuantity(quantity - 1);
     }
-  }
+  };
 
   const increaseQuantity = () => {
-    setQuantity(quantity + 1)
-  }
+    setQuantity(quantity + 1);
+  };
 
   return (
     <Container>
@@ -134,7 +147,10 @@ export default function ProductPage() {
           </div>
 
           <div className="flex items-center">
-            <ProductDiscountWithPrice price={product.price} discount={product.discount} />
+            <ProductDiscountWithPrice
+              price={product.price}
+              discount={product.discount}
+            />
           </div>
 
           <div className="space-y-4">
@@ -165,13 +181,43 @@ export default function ProductPage() {
                   increaseQuantity={increaseQuantity}
                   decreaseQuantity={decreaseQuantity}
                 />
+                {/* <AddReduceProductQuantity item={product} /> */}
               </div>
             </div>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3">
-            <AddToCart product={product} onAddToCart={handleAddToCart} />
-            <AddToWishlist product={product} onAddToWishlist={handleAddToWishlist} productPage={true} />
+            {isAuthenticated && isInCart ? (
+              <RemoveFromCart handleRemoveFromCart={handleRemoveFromCart} />
+            ) : (
+              <>
+                {isAuthenticated && handleAddToCart ? (
+                  <>
+                    <AddToCart
+                      product={product}
+                      onAddToCart={handleAddToCart}
+                    />
+                    <AddToWishlist
+                      product={product}
+                      onAddToWishlist={handleAddToWishlist}
+                      productPage={true}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Link href="/login">
+                      <AddToCart product={product} link={true} />
+                    </Link>
+                    <Link href="/login">
+                      <AddToWishlist
+                        product={product}
+                        link={true}
+                      />
+                    </Link>
+                  </>
+                )}
+              </>
+            )}
           </div>
 
           <div className="border-t pt-4">

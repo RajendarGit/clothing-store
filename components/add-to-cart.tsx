@@ -5,14 +5,15 @@ import { ShoppingBag } from "lucide-react";
 interface AddToCartProps {
   product: any;
   onAddToCart?: (product: any) => void;
+  link?: boolean;
 }
 
-const AddToCart: FC<AddToCartProps> = ({ product, onAddToCart }) => {
+const AddToCart: FC<AddToCartProps> = ({ product, onAddToCart, link = false }) => {
   return (
     <Button
       size="sm"
       className="flex items-center"
-      onClick={(e) => {
+      onClick={link ? undefined : (e) => {
         e.preventDefault();
         onAddToCart?.(product);
       }}

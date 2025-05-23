@@ -9,8 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import MainNav from "@/components/main-nav";
-import Footer from "@/components/footer";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -23,29 +21,30 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Container from "@/components/ui/container";
+import { formMessages } from "@/lib/messages";
 
 // Define the form schema with Zod
 const registerSchema = z
   .object({
-    name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-    email: z.string().email({ message: "Please enter a valid email address" }),
+    name: z.string().min(2, { message: formMessages.nameValidation }),
+    email: z.string().email({ message: formMessages.invalidEmail }),
     password: z
       .string()
-      .min(8, { message: "Password must be at least 8 characters" })
+      .min(8, { message: formMessages.passwordValidation })
       .regex(/[A-Z]/, {
-        message: "Password must contain at least one uppercase letter",
+        message: formMessages.passwordCharValidation1,
       })
       .regex(/[a-z]/, {
-        message: "Password must contain at least one lowercase letter",
+        message: formMessages.passwordCharValidation2,
       })
-      .regex(/[0-9]/, { message: "Password must contain at least one number" }),
+      .regex(/[0-9]/, { message: formMessages.passwordCharValidation3 }),
     confirmPassword: z.string(),
     terms: z.boolean().refine((val) => val === true, {
       message: "You must agree to the terms and conditions",
     }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
+    message: formMessages.passwordMissMatch,
     path: ["confirmPassword"],
   });
 
@@ -86,8 +85,8 @@ export default function RegisterPage() {
         );
 
         toast({
-          title: "Registration successful",
-          description: "Welcome to Elegance!",
+          title: formMessages.registerSuccessTitle,
+          description: formMessages.registerSuccessDescription,
         });
 
         router.push("/");
@@ -95,8 +94,8 @@ export default function RegisterPage() {
       }, 1000);
     } catch (error) {
       toast({
-        title: "Registration failed",
-        description: "There was an error creating your account",
+        title: formMessages.registerErrorTitle,
+        description: formMessages.registerErrorDescription,
         variant: "destructive",
       });
       setIsLoading(false);
