@@ -1,45 +1,31 @@
-import React from "react";
-import { Button } from "./ui/button";
-import { Minus, Plus } from "lucide-react";
-import { useDispatch } from "react-redux";
-import { updateQuantity } from "@/redux/features/cart-slice";
+import { useDispatch } from 'react-redux';
+import { updateQuantity } from '@/redux/features/cart-slice';
+import { Button } from './ui/button';
 
-interface AddReduceProductQuantityProps {
-  item: {
-    id: string;
-    quantity?: number;
-  };
+interface CartItem {
+  id: string | number;
+  quantity: number;
 }
 
-const AddReduceProductQuantity: React.FC<AddReduceProductQuantityProps> = ({ item }) => {
+const AddReduceProductQuantity = ({ item }: { item: CartItem }) => {
   const dispatch = useDispatch();
 
-  const handleUpdateQuantity = (quantity: number) => {
-    if (quantity < 1) return;
-    dispatch(updateQuantity({ id: Number(item.id), quantity }));
+  const handleIncrease = () => {
+    dispatch(updateQuantity({ id: Number(item.id), quantity: item.quantity + 1 }));
+  };
+
+  const handleDecrease = () => {
+    if (item.quantity > 1) {
+      dispatch(updateQuantity({ id: Number(item.id), quantity: item.quantity - 1 }));
+    }
   };
 
   return (
-    <>
-      <Button
-        variant="outline"
-        size="icon"
-        className="h-8 w-8"
-        onClick={() => handleUpdateQuantity((item.quantity ?? 1) - 1)}
-        disabled={(item.quantity ?? 1) <= 1}
-      >
-        <Minus className="h-3 w-3" />
-      </Button>
-      <span className="w-10 text-center">{item.quantity ?? 1}</span>
-      <Button
-        variant="outline"
-        size="icon"
-        className="h-8 w-8"
-        onClick={() => handleUpdateQuantity((item.quantity ?? 1) + 1)}
-      >
-        <Plus className="h-3 w-3" />
-      </Button>
-    </>
+    <div className="flex items-center space-x-2">
+      <Button variant='ghost' size='sm' onClick={handleDecrease}>-</Button>
+      <span>{item.quantity}</span>
+      <Button variant='ghost' size='sm' onClick={handleIncrease}>+</Button>
+    </div>
   );
 };
 

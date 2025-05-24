@@ -30,6 +30,7 @@ import ProductDescriptionDetailsReview from "@/components/product-description-de
 import { useAppSelector } from "@/hooks/use-app-selector";
 import RemoveFromCart from "@/components/remove-from-cart";
 import Link from "next/link";
+import { toast } from "@/components/ui/use-toast";
 import AddReduceProductQuantity from "@/components/add-reduce-product-quantity";
 
 export default function ProductPage() {
@@ -38,21 +39,24 @@ export default function ProductPage() {
   const { toast } = useToast();
   const { user } = useSelector((state: RootState) => state.auth);
 
+  const product =
+    dummyProducts.find((p) => p.id === Number(id)) || dummyProducts[0];
+
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const cartItems = useAppSelector((state) => state.cart.items);
 
-  
+  const cartItem = cartItems.find((item) => item.id === product.id);
+  const currentQuantity = cartItem ? cartItem.quantity : 1;
+
   const handleRemoveFromCart = () => {
     dispatch(removeFromCart(product.id));
   };
-  
-  // Find the product by ID
-  const product = dummyProducts.find((p) => p.id === Number(id)) || dummyProducts[0];
-  const isInCart = cartItems.some((item) => item.id === product.id);
 
+  // Find the product by ID
+
+  const isInCart = cartItems.some((item) => item.id === product.id);
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState("M");
-  const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState(0);
 
   // Generate additional images for the product
@@ -76,7 +80,7 @@ export default function ProductPage() {
     dispatch(
       addToCart({
         ...product,
-        quantity,
+        quantity: 1,
         selectedColor,
         selectedSize,
       })
@@ -94,16 +98,6 @@ export default function ProductPage() {
       title: "Added to wishlist",
       description: `${product.name} has been added to your wishlist`,
     });
-  };
-
-  const decreaseQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
-  };
-
-  const increaseQuantity = () => {
-    setQuantity(quantity + 1);
   };
 
   return (
@@ -176,12 +170,14 @@ export default function ProductPage() {
             <div>
               <h3 className="text-sm font-medium mb-2">Quantity</h3>
               <div className="flex items-center">
-                <ProductQuantityOptions
+                {/* <ProductQuantityOptions
                   quantity={quantity}
                   increaseQuantity={increaseQuantity}
                   decreaseQuantity={decreaseQuantity}
+                /> */}
+                <AddReduceProductQuantity
+                  item={{ ...product, quantity: currentQuantity }}
                 />
-                {/* <AddReduceProductQuantity item={product} /> */}
               </div>
             </div>
           </div>
@@ -209,10 +205,7 @@ export default function ProductPage() {
                       <AddToCart product={product} link={true} />
                     </Link>
                     <Link href="/login">
-                      <AddToWishlist
-                        product={product}
-                        link={true}
-                      />
+                      <AddToWishlist product={product} link={true} />
                     </Link>
                   </>
                 )}

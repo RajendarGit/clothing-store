@@ -13,7 +13,7 @@ interface CartBodyProps {
     selectedColor?: string;
     selectedSize?: string;
     price: number;
-    quantity?: number;
+    quantity: number;
   }[];
   handleRemoveItem: (id: string) => void;
 }
@@ -67,7 +67,7 @@ const CartBody: FC<CartBodyProps> = ({
           </td>
           <td className="p-4">
             <div className="flex items-center justify-center">
-                <AddReduceProductQuantity item={item} />
+                <AddReduceProductQuantity item={{ ...item, quantity: item.quantity ?? 1 }} />
             </div>
           </td>
           <td className="p-4 text-right">
