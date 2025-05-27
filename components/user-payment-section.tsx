@@ -22,6 +22,7 @@ import {
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
+import Image from "next/image";
 
 const UserPaymentSection = () => {
   const [paymentMethods, setPaymentMethods] = useState(mockPaymentMethods);
@@ -56,8 +57,13 @@ const UserPaymentSection = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-6 bg-muted rounded flex items-center justify-center text-xs font-medium">
-                    {/* {payment.type.toUpperCase()} */}
-                    <i className={payment.icon}></i>
+                    <Image
+                      src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/payment/${payment.icon}.png` || payment.type}
+                      alt={payment.type}
+                      width={24}
+                      height={24}
+                      className="h-10 w-10"
+                    />
                   </div>
                   <div>
                     <p className="font-medium">

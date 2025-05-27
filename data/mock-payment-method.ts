@@ -8,7 +8,7 @@ export const mockPaymentMethods: PaymentMethod[] = [
     expiryMonth: "12",
     expiryYear: "2025",
     isDefault: true,
-    icon: "fa-brands fa-cc-visa",
+    icon: "visa",
   },
   {
     id: "2",
@@ -17,6 +17,6 @@ export const mockPaymentMethods: PaymentMethod[] = [
     expiryMonth: "06",
     expiryYear: "2026",
     isDefault: false,
-    icon: "fa-brands fa-cc-mastercard",
+    icon: "mastercard",
   },
 ];
