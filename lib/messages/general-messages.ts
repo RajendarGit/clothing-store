@@ -4,5 +4,7 @@ export const generalMessages = {
     noProductsTitle: "No Products Found.",
     noProductsDescription: "There are no products in this collection yet. Check back soon!",
     noProductFilterDescription: "Try adjusting your filters to find what you're looking for.",
+    accessAccountTitle: "Access Your Account.",
+    accessAccountDescription: "Please sign in to view your account details and manage your profile.",
 };
 

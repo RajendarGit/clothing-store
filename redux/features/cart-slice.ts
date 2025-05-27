@@ -39,17 +39,14 @@ export const cartSlice = createSlice({
       state.items = state.items.filter(i => i.id !== action.payload);
     },
 
-     updateQuantity: (state, action: PayloadAction<{ id: number; quantity: number }>) => {
-  const { id, quantity } = action.payload;
-  const item = state.items.find(i => i.id === id);
-  if (item) {
-    item.quantity = quantity;
-  }
-},
+    updateQuantity: (state, action: PayloadAction<{ id: number; quantity: number }>) => {
+      const { id, quantity } = action.payload;
+      const item = state.items.find(i => i.id === id);
+      if (item) {
+        item.quantity = quantity;
+      }
+    },
 
-
-
-    // ✅ Add this
     clearCart: (state) => {
       state.items = [];
     },

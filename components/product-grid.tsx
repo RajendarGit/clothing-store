@@ -6,7 +6,7 @@ import type { RootState } from "@/redux/store"
 import { useToast } from "@/hooks/use-toast"
 import type { Product } from "@/types/product"
 import { ProductCard } from "./product-card"
-import { addToCartMessages, addToWishlistMessages } from "@/lib/messages"
+import { addToCartMessages } from "@/lib/messages"
 
 interface ProductGridProps {
   products: Product[]
@@ -34,14 +34,6 @@ export default function ProductGrid({ products }: ProductGridProps) {
     })
   }
 
-  const handleAddToWishlist = (product: Product) => {
-    dispatch(addToWishlist(product))
-    toast({
-      title: addToWishlistMessages.addedToWishlistTitle,
-      description: addToWishlistMessages.addedToWishlistDescription(product.name),
-    })
-  }
-
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {products.map((product) => (
@@ -49,7 +41,6 @@ export default function ProductGrid({ products }: ProductGridProps) {
           key={product.id}
           product={product}
           onAddToCart={handleAddToCart}
-          onAddToWishlist={handleAddToWishlist}
         />
       ))}
     </div>

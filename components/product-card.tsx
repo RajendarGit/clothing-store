@@ -6,26 +6,24 @@ import Link from "next/link";
 import type { Product } from "@/types/product";
 import ProductColor from "./product-color";
 import ProductDiscount from "./product-discount";
-import AddToWishlist from "./add-to-wishlist";
 import AddToCart from "./add-to-cart";
 import ProductDiscountNew from "./product-discount-new";
 import { removeFromCart } from "@/redux/features/cart-slice";
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
 import { useAppSelector } from "@/hooks/use-app-selector";
 import RemoveFromCart from "./remove-from-cart";
+import { AddToWishlist } from "./wishlist-button";
 
 interface ProductCardProps {
   product: Product;
   className?: string;
   onAddToCart?: (product: Product) => void;
-  onAddToWishlist?: (product: Product) => void;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   className,
   onAddToCart,
-  onAddToWishlist,
 }) => {
   const dispatch = useAppDispatch();
 
@@ -63,10 +61,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           product={{ isNew: !!product.isNew, discount: product.discount ?? 0 }}
         />
 
-        {/* ✅ Show wishlist button only when user is authenticated */}
-        {isAuthenticated && (
-          <AddToWishlist product={product} onAddToWishlist={onAddToWishlist} />
-        )}
+        {isAuthenticated && <AddToWishlist product={product} />}
       </div>
 
       <div className="p-4">

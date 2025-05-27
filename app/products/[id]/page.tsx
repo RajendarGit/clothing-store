@@ -3,18 +3,11 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeFromCart } from "@/redux/features/cart-slice";
 import { addToWishlist } from "@/redux/features/wishlist-slice";
 import type { RootState } from "@/redux/store";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Heart, Minus, Plus, Share2, Star, Truck } from "lucide-react";
-import MainNav from "@/components/main-nav";
-import Footer from "@/components/footer";
 import { dummyProducts } from "@/data/products";
 import Container from "@/components/ui/container";
 import ProductActiveImageList from "@/components/product-active-image-list";
@@ -25,19 +18,21 @@ import ProductColorRanges from "@/components/product-color-ranges";
 import ProductSizeRanges from "@/components/product-size-ranges";
 import ProductQuantityOptions from "@/components/product-quantity-options";
 import AddToCart from "@/components/add-to-cart";
-import AddToWishlist from "@/components/add-to-wishlist";
 import ProductDescriptionDetailsReview from "@/components/product-description-details-review";
 import { useAppSelector } from "@/hooks/use-app-selector";
 import RemoveFromCart from "@/components/remove-from-cart";
 import Link from "next/link";
 import { toast } from "@/components/ui/use-toast";
 import AddReduceProductQuantity from "@/components/add-reduce-product-quantity";
+import { useAppDispatch } from "@/hooks/use-app-dispatch";
+import { AddToWishlist } from "@/components/wishlist-button";
+import { Share2, Truck } from "lucide-react";
 
 export default function ProductPage() {
   const { id } = useParams();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { toast } = useToast();
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user } = useAppSelector((state: RootState) => state.auth);
 
   const product =
     dummyProducts.find((p) => p.id === Number(id)) || dummyProducts[0];
@@ -92,14 +87,7 @@ export default function ProductPage() {
     });
   };
 
-  const handleAddToWishlist = () => {
-    dispatch(addToWishlist(product));
-    toast({
-      title: "Added to wishlist",
-      description: `${product.name} has been added to your wishlist`,
-    });
-  };
-
+ 
   return (
     <Container>
       <div className="grid md:grid-cols-2 gap-12">
@@ -107,7 +95,6 @@ export default function ProductPage() {
         <div className="space-y-4">
           <div className="relative aspect-square overflow-hidden rounded-lg border">
             <Image
-              // src={productImages[activeImage] || "/placeholder.svg"}
               src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/${
                 product.image ?? "placeholder.svg"
               }`}
@@ -170,11 +157,6 @@ export default function ProductPage() {
             <div>
               <h3 className="text-sm font-medium mb-2">Quantity</h3>
               <div className="flex items-center">
-                {/* <ProductQuantityOptions
-                  quantity={quantity}
-                  increaseQuantity={increaseQuantity}
-                  decreaseQuantity={decreaseQuantity}
-                /> */}
                 <AddReduceProductQuantity
                   item={{ ...product, quantity: currentQuantity }}
                 />
@@ -193,11 +175,7 @@ export default function ProductPage() {
                       product={product}
                       onAddToCart={handleAddToCart}
                     />
-                    <AddToWishlist
-                      product={product}
-                      onAddToWishlist={handleAddToWishlist}
-                      productPage={true}
-                    />
+                    <AddToWishlist product={product} />
                   </>
                 ) : (
                   <>
@@ -205,7 +183,7 @@ export default function ProductPage() {
                       <AddToCart product={product} link={true} />
                     </Link>
                     <Link href="/login">
-                      <AddToWishlist product={product} link={true} />
+                      <AddToWishlist product={product} variant="link" />
                     </Link>
                   </>
                 )}

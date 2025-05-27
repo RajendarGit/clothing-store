@@ -13,6 +13,7 @@ import MegaMenuActiveButton from "./mega-menu-active-button";
 import MegaMenuUserMenu from "./mega-menu-user-menu";
 import useClickOutside from "@/hooks/use-click-outside";
 import Container from "./ui/container";
+import { useAppSelector } from "@/hooks/use-app-selector";
 
 export default function MainNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,6 +27,7 @@ export default function MainNav() {
   const menRef = useRef<HTMLDivElement>(null);
   const kidsRef = useRef<HTMLDivElement>(null);
   const accessoriesRef = useRef<HTMLDivElement>(null);
+  const { items: wishlistItems } = useAppSelector((state: RootState) => state.wishlist);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -121,9 +123,14 @@ export default function MainNav() {
             </Link>
           </Button>
 
-          <Button variant="ghost" size="icon" asChild>
+          <Button variant="ghost" size="icon" className="relative" asChild>
             <Link href="/wishlist">
               <Heart className="h-5 w-5" />
+              {wishlistItems.length > 0 && (
+                <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary text-xs text-white flex items-center justify-center">
+                  {wishlistItems.length}
+                </span>
+              )}
               <span className="sr-only">Wishlist</span>
             </Link>
           </Button>

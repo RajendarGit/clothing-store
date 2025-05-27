@@ -14,8 +14,9 @@ import CartBody from "@/components/cart-body"
 import OrderSummary from "@/components/order-summary"
 import { addToCartMessages } from "@/lib/messages"
 import { useAppSelector } from "@/hooks/use-app-selector"
+import { withAuthProtection } from "@/components/hoc/with-auth-protection"
 
-export default function CartPage() {
+function CartPage() {
   const { items } = useAppSelector((state) => state.cart);
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useDispatch()
@@ -139,3 +140,5 @@ export default function CartPage() {
     </Container>
   );
 }
+
+export default withAuthProtection(CartPage);
